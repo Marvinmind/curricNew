@@ -26,8 +26,8 @@ app.directive('sectionloader',['$compile', 'sectionService', '$http',
 		template: '<button ng-click="insertSubsections()">loadSection</button><br>',
 		scope : {sectionId:'@'}, 
 		terminal: false,
-		compile: function (element, attrs) {
-			return function(scope, iElement, iAttr){
+		link: 
+			function(scope, iElement, iAttr){
 		    	scope.insertSubsections = function(){
 		    				    				    		console.log(iAttr)
 
@@ -51,8 +51,8 @@ app.directive('sectionloader',['$compile', 'sectionService', '$http',
 				  			});
 		    			});
 		    	};
-			};
-		}
+			}
+		
 	}
 }]);
 /*
