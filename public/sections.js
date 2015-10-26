@@ -31,7 +31,8 @@
 {
 	"sectionId" : "2.1",
 	"sectionName" : "Schlüsselkompetenzen",
-	"minCP" : 12
+	"minCP" : 12,
+	"modules" : ["Mod.1","Mod.2"]
 },
 
 {
