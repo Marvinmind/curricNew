@@ -1,7 +1,8 @@
 <div class="moduleContainer">
 	<ul>
 		<li ng-repeat="module in modules">
-			{{module.moduleName}}<br>CP: {{module.creditPoints}}<br><input type="checkbox" ng-change="test()"></input>
+		{{module.moduleName}}<br>CP: {{module.creditPoints}}<br><input type="checkbox" ng-model="$parent.moduleChecks[module.moduleName]" ng-true-value="true" ng-false-value="false">
+		</input><br><h2></h2>
 		</li>
 	<ul>
 </div>
