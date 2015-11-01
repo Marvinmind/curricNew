@@ -19,7 +19,7 @@
 	"sectionName":"Professionalisierungsbereich",
 	"minCP":60,
 	"choose": "all",
-	"subsections": ["2.0","2.1"]
+	"subsections": ["2.0","2.1", "2.2"]
 
 },
 {
@@ -33,6 +33,11 @@
 	"sectionName" : "Schlüsselkompetenzen",
 	"minCP" : 12,
 	"modules" : ["Mod.1","Mod.2"]
+},
+{ "sectionId": "2.2",
+"sectionName": "Test Section",
+"minCP": 6,
+"modules": ["Mod.1", "Mod.3"]
 },
 
 {

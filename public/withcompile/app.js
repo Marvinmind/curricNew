@@ -1,6 +1,10 @@
 var app = angular.module('myApp',[]);
 app.controller('standardController', ['$rootScope', 'sectionService' ,function($scope, sectionService){
 	$scope.chosenModules = [];
+
+	$scope.setToFalse = function(){
+		$scope.stuff = false;
+	}
 	$scope.getCpSum = function(){
 		var sum = 0;
 		if($scope.chosenModules){
@@ -14,13 +18,26 @@ app.controller('standardController', ['$rootScope', 'sectionService' ,function($
 			var found = false;
 			$scope.chosenModules.forEach(function(chosenModule){
 				if(module.moduleId == chosenModule.moduleId){
-					chosenModule.sectionId = module.sectionId;
+					console.log('swap');
+					chosenModule.sectionId = section.sectionId;
 					found = true;
 				}
 			});
 			if(found == false){
 				$scope.chosenModules.push({"moduleId":module.moduleId, "creditPoints":module.creditPoints, "sectionId":section.sectionId});
 			}
+	$scope.removeModule = function(module, section){
+		var count = 0;
+		var foundAtIdex = undefined;
+		$scope.chosenModules.forEach(function(chosenModule){
+			if(module.moduleId==chosenModule.moduleId && section.sectionId == chosenModule.sectionId){
+				foundAtIdex = count;
+			}
+		});
+		if(foundAtIdex!= undefined){
+			$scope.chosenModules.splice(foundAtIdex, 1);
+		}
+	}
 	};
 }]);
 
@@ -66,21 +83,27 @@ app.directive('sectionloader',['$compile', 'sectionService', '$http','$rootScope
 		    	scope.insertSubsections = function(){
 		    		scope.moduleChecks = {};
 		    		scope.modules = []
-		    		$rootScope.$watchCollection("chosenModules", function(){
+		    		$rootScope.$watch("chosenModules", function(){
+		    			console.log('change');
 		    			$rootScope.chosenModules.forEach(function(chosenModule){
 		    				scope.modules.forEach(function(module){
-		    					console.log(chosenModule);
 		    					if(chosenModule.sectionId != scope.section.sectionId && chosenModule.moduleId == module.moduleId){
-									scope.moduleChecks.moduleId = false;
+		    						console.log('unselect:'+module.moduleName);
+									scope.moduleChecks[module.moduleName] = false;
 		    					}
 		    				});
 		    			});
-		    		});
+		    		}, true);
 					scope.$watchCollection("moduleChecks",function(){
 						if(scope.modules){
 						scope.modules.forEach(function(module){
-							if(scope.moduleChecks[module.moduleName]==true)
+							if(scope.moduleChecks[module.moduleName]==true){
 								$rootScope.chooseModule(module, scope.section);
+							}
+							else{
+
+								$rootScope.removeModule(module, scope.section);
+							}
 						});
 						}
 					});	    				    	
@@ -89,7 +112,8 @@ app.directive('sectionloader',['$compile', 'sectionService', '$http','$rootScope
 						var sectionHtmlLocation = "http://localhost:3000/withcompile/sectionhtml.html";
 						var moduleHtmlLocation = "http://localhost:3000/withcompile/modulehtml.html"
 
-						if(data.subsections){							scope.subsections = [];
+						if(data.subsections){							
+							scope.subsections = [];
 							data.subsections.forEach(function(id){
 								sectionService.loadBySectionId(id,function(data){
 									scope.subsections.push(data);
