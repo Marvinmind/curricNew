@@ -39,6 +39,10 @@ app.controller('standardController', ['$rootScope', 'sectionService' ,function($
 		}
 	}
 	};
+	
+	$scope.insertSection(section){
+		
+	}
 }]);
 
 app.factory('sectionService', ['$rootScope', '$http', function($rootScope, $http){
