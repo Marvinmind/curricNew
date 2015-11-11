@@ -40,8 +40,21 @@ app.controller('standardController', ['$rootScope', 'sectionService' ,function($
 	}
 	};
 	
-	$scope.insertSection(section){
-		
+	$scope.insertSection= function(rootNode, section){
+		rootNode.subsections.forEach(function(node){
+			if(sectionService.isDirectParent(node,section)){
+				if(section.exclusive == true){
+					node.subsections = [section];
+				}
+				else{
+					node.subsections.push(section)
+				}
+			}
+			else if(sectionService.isParent(node,section)){
+				insertSection(node,section);
+			}
+
+		})
 	}
 }]);
 
@@ -59,7 +72,7 @@ app.factory('sectionService', ['$rootScope', '$http', function($rootScope, $http
 				});
 			}
 		});
-	};
+	}
 	function loadModuleById(id, callback){
 		$http.get(moduleLocation).success(function(data){
 			data.modules.forEach(function(module){
@@ -69,8 +82,28 @@ app.factory('sectionService', ['$rootScope', '$http', function($rootScope, $http
 			});
 		});
 	}
+	function isDirectParent(parent, child){
+		var parentId = parent.sectionId.split('.');
+		var childId = child.sectionId.split('.');
+		var directParent = true;
+		if(parentId.length+1 == childId.length){
+			var count = 0;
+			parentId.forEach(function(level){
+				if(level!=childId[count]){
+					directParent= false;
+				}
+				count+=1;
+			})
+		}
+		else{
+			directParent = false;
+		}
+		return directParent;
+		
+	}
 	return {loadBySectionId: loadSectionById,
-			loadByModuleId: loadModuleById
+			loadByModuleId: loadModuleById,
+			isDirectParent: isDirectParent
 			};
 }]);
 
@@ -144,3 +177,4 @@ app.directive('sectionloader',['$compile', 'sectionService', '$http','$rootScope
 			}	
 	}
 }]);
+

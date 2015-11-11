@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.3.3/jasmine.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.3.3/jasmine.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.3.3/jasmine-html.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.3.3/boot.min.js"></script>
+        <script type="text/javascript" src="https://code.angularjs.org/1.4.0-rc.2/angular.min.js"></script>
+		<script type="text/javascript" src="https://code.angularjs.org/1.4.0-rc.2/angular-mocks.js"></script>
+		<script type="text/javascript" src="app.js"></script>
+
+    </head>
+    <body>
+    </body>
+    <script type="text/javascript">
+	describe('stuff', function(){
+	it('somestuff', function(){
+	expect(1).toBe(1);
+	});
+	});
+
+	describe('isDirectParentFunction', function () {
+
+		beforeEach(angular.mock.module('myApp'));
+		var service;
+		beforeEach(angular.mock.inject(function GetDependency(sectionService){
+		  service = sectionService;
+		}));
+
+		it('2.3 should be direct Parent of 2.3.1', function(){
+			child= {sectionId: '2.3.1'};
+			parent= {sectionId: '2.3'};
+			expect(service.isDirectParent(parent, child)).toBe(true);
+		});
+		it('2.3 should not be direct Parent of 2.3.1.1', function(){
+			child= {sectionId: '2.3.1.1'};
+			parent= {sectionId: '2.3'};
+			expect(service.isDirectParent(parent, child)).not.toBe(true);
+		});
+	});
+
+    </script>
+</html>
